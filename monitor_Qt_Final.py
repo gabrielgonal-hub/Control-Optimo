@@ -10,6 +10,7 @@ import collections
 import struct
 import copy
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel
 from PySide6.QtCore import QTimer, Qt
@@ -59,6 +60,10 @@ class serialPlot:
 
     def saveCSV(self):
 
+        if not self.csvPackets:
+            print("No hay datos para guardar.")
+            return
+            
         data = []
 
         for packet in self.csvPackets:
@@ -86,35 +91,74 @@ class serialPlot:
         print("\nCSV guardado en:")
         print(path)
 
-        self.calcular_J(df)
+        resultados, nombres = self.calcular_J(df)
+        self.generar_reporte(df, resultados, nombres, filename, path)
 
     def calcular_J(self, df):
 
-        Q = [[1,0],[0,5]]
-        R = 1
-
         dt = df['t'].diff().fillna(0)
-
+    
         resultados = []
-
+    
         for i in range(1,5):
             x1 = df[f'X1_{i}']
             x2 = df[f'Y{i}']
             u  = df[f'U{i}']
-
+    
             J = ((x1**2 + 5*x2**2 + u**2) * dt).sum()
-
             resultados.append(J)
-
+    
         nombres = ["AdP","Int-AdP","LQR","LQI"]
+    
+        return resultados, nombres
 
-        print("\n===== COSTO J =====")
+    def generar_reporte(self, df, resultados, nombres, filename, path):
+
+        t = df['t']
+        R = df['R']
+    
+        fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+        axs = axs.flatten()
+    
         for i in range(4):
-            print(f"{nombres[i]}: {resultados[i]:.4f}")
-
+            ax = axs[i]
+        
+            Y = df[f'Y{i+1}']
+            U = df[f'U{i+1}']
+        
+            ax.plot(t, R, 'r', label='Referencia')
+            ax.plot(t, Y, 'k', label='Salida')
+            ax.plot(t, U, 'b', label='Control')
+        
+            ax.set_title(nombres[i])
+            ax.grid()
+        
+            if i == 0:
+                ax.legend()
+    
+        # Texto de costos
+        texto_costos = "   ".join([f"{nombres[i]}: {resultados[i]:.2f}" for i in range(4)])
+    
         best = resultados.index(min(resultados))
-        print(f"\nMEJOR SEGÚN J: {nombres[best]}")
-
+        mejor_texto = f"MEJOR: {nombres[best]}"
+    
+        # Titulo general
+        fig.suptitle(filename, fontsize=14)
+    
+        # Texto abajo
+        fig.text(0.5, 0.04, texto_costos, ha='center', fontsize=10)
+        fig.text(0.5, 0.01, mejor_texto, ha='center', fontsize=12, weight='bold')
+    
+        plt.tight_layout(rect=[0, 0.06, 1, 0.95])
+    
+        # Guardar imagen
+        img_path = path.replace(".csv", ".png")
+        plt.savefig(img_path, dpi=300)
+    
+        print("\nImagen guardada en:")
+        print(img_path)
+    
+        plt.close()
 
 # ================= GUI =================
 class Monitor(QMainWindow):
