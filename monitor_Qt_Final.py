@@ -56,7 +56,7 @@ class serialPlot:
                 start = self.buffer.find(b'\xAA\x55')
     
                 if start == -1:
-                    self.buffer.clear()
+                    self.buffer = self.buffer[-2:]
                     break
     
                 if len(self.buffer) < start + 2 + 56:
