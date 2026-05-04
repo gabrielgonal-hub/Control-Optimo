@@ -24,6 +24,8 @@ class serialPlot:
 
         self.rawData = bytearray(56)  # NUEVO
 
+        self.buffer = bytearray()
+
         # [R,X1,Y,U] x 4 = 16 buffers
         self.data = [collections.deque([0]*plotLength, maxlen=plotLength) for _ in range(16)]
 
@@ -42,14 +44,30 @@ class serialPlot:
     def backgroundThread(self):
         time.sleep(1)
         self.serialConnection.reset_input_buffer()
-
+    
         while self.isRun:
-            if self.serialConnection.in_waiting >= 56:
-                self.serialConnection.readinto(self.rawData)
-                packet = copy.deepcopy(self.rawData)
+    
+            data = self.serialConnection.read(self.serialConnection.in_waiting or 1)
+            if data:
+                self.buffer.extend(data)
+    
+            #sincronizacion de paquetes
+            while True:
+                start = self.buffer.find(b'\xAA\x55')
+    
+                if start == -1:
+                    self.buffer.clear()
+                    break
+    
+                if len(self.buffer) < start + 2 + 56:
+                    break  # esperar mas datos
+    
+                packet = self.buffer[start+2:start+2+56]
+                self.buffer = self.buffer[start+2+56:]
+    
                 self.packetQueue.append(packet)
                 self.csvPackets.append(packet)
-
+            
     def close(self, saveCSV):
         self.isRun = False
         self.thread.join()
