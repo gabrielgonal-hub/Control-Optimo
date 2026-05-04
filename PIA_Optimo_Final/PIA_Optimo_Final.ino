@@ -315,5 +315,7 @@ void coms_python(float* Rp,
     U4B[0],U4B[1],U4B[2],U4B[3]       //control sistema 4 LQR
   };
 
+  uint8_t header[2] = {0xAA, 0x55};
+  Serial.write(header, 2);
   Serial.write(buf, 56);
 }
