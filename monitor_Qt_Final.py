@@ -11,6 +11,8 @@ import struct
 import copy
 import pandas as pd
 import matplotlib.pyplot as plt
+import platform
+import subprocess
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel
 from PySide6.QtCore import QTimer, Qt
@@ -100,9 +102,20 @@ class serialPlot:
             'X1_4','Y4','U4'
         ])
 
-        os.makedirs("datos", exist_ok=True)
+        # Ruta base compatible con .py y .exe
+        if getattr(sys, 'frozen', False):
+            base_dir = os.path.dirname(sys.executable)
+        else:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Carpeta /data
+        data_dir = os.path.join(base_dir, "data")
+        os.makedirs(data_dir, exist_ok=True)
+        
         filename = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        path = os.path.abspath(os.path.join("datos", f"datos_{filename}.csv"))
+        
+        # Ruta completa del CSV
+        path = os.path.join(data_dir, f"datos_{filename}.csv")
 
         df.to_csv(path, index=False)
 
@@ -146,7 +159,7 @@ class serialPlot:
         
             ax.plot(t, R, 'r', label='Referencia')
             ax.plot(t, Y, 'k', label='Salida')
-            ax.plot(t, U, 'b', label='Control')
+            ax.plot(t, U, 'b--', label='Control')
         
             ax.set_title(nombres[i])
             ax.grid()
@@ -154,29 +167,50 @@ class serialPlot:
             if i == 0:
                 ax.legend()
     
-        # Texto de costos
-        texto_costos = "   ".join([f"{nombres[i]}: {resultados[i]:.2f}" for i in range(4)])
-    
+        # Mejor índice
         best = resultados.index(min(resultados))
-        mejor_texto = f"MEJOR: {nombres[best]}"
-    
-        # Titulo general
+        
+        # Título general
         fig.suptitle(filename, fontsize=14)
-    
-        # Texto abajo
-        fig.text(0.5, 0.04, texto_costos, ha='center', fontsize=10)
+        
+        # === NUEVO BLOQUE DE TEXTO ===
+        
+        # Título del índice
+        fig.text(0.5, 0.08, "Índice de desempeño", ha='center', fontsize=12, weight='bold')
+        
+        # Fórmula (LaTeX)
+        fig.text(0.5, 0.06, r"$J = \int (x^T Q x + u^T R u)\, dt$", ha='center', fontsize=11)
+        
+        # Nombres y valores alineados por columnas
+        for i in range(4):
+            fig.text(0.2 + i*0.2, 0.04, nombres[i], ha='center', fontsize=10)
+            fig.text(0.2 + i*0.2, 0.025, f"J = {resultados[i]:.2f}", ha='center', fontsize=10)
+        
+        # Mejor controlador
+        mejor_texto = f"MEJOR: {nombres[best]}"
         fig.text(0.5, 0.01, mejor_texto, ha='center', fontsize=12, weight='bold')
     
-        plt.tight_layout(rect=[0, 0.06, 1, 0.95])
+        plt.tight_layout(rect=[0, 0.10, 1, 0.95])
     
         # Guardar imagen
         img_path = path.replace(".csv", ".png")
         plt.savefig(img_path, dpi=300)
-    
+        
         print("\nImagen guardada en:")
         print(img_path)
-    
+        
         plt.close()
+        
+        # === NUEVO: abrir imagen automáticamente ===
+        try:
+            if platform.system() == "Windows":
+                os.startfile(img_path)
+            elif platform.system() == "Darwin":  # macOS
+                subprocess.call(["open", img_path])
+            else:  # Linux
+                subprocess.call(["xdg-open", img_path])
+        except Exception as e:
+            print("No se pudo abrir la imagen automáticamente:", e)
 
 # ================= GUI =================
 class Monitor(QMainWindow):
@@ -200,9 +234,9 @@ class Monitor(QMainWindow):
             p.setYRange(ymin, ymax)
             p.setBackground('w')
 
-            r = p.plot(pen='r')
-            y = p.plot(pen='k')
-            u = p.plot(pen='b')
+            r = p.plot(pen=pg.mkPen('r', width=2))
+            y = p.plot(pen=pg.mkPen('k', width=2))
+            u = p.plot(pen=pg.mkPen(color='b', width=2, style=Qt.DashLine))
 
             self.plots.append(p)
             self.curves.append((r,y,u))
