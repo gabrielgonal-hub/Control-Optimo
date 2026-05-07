@@ -176,19 +176,19 @@ class serialPlot:
         # === NUEVO BLOQUE DE TEXTO ===
         
         # Título del índice
-        fig.text(0.5, 0.08, "Índice de desempeño", ha='center', fontsize=12, weight='bold')
+        fig.text(0.5, 0.14, "Índice de desempeño", ha='center', fontsize=12, weight='bold')
         
         # Fórmula (LaTeX)
-        fig.text(0.5, 0.06, r"$J = \int (x^T Q x + u^T R u)\, dt$", ha='center', fontsize=11)
+        fig.text(0.5, 0.11, r"$J = \int (x^T Q x + u^T R u)\, dt$", ha='center', fontsize=11)
         
         # Nombres y valores alineados por columnas
         for i in range(4):
-            fig.text(0.2 + i*0.2, 0.04, nombres[i], ha='center', fontsize=10)
-            fig.text(0.2 + i*0.2, 0.025, f"J = {resultados[i]:.2f}", ha='center', fontsize=10)
+            fig.text(0.2 + i*0.2, 0.08, nombres[i], ha='center', fontsize=10)
+            fig.text(0.2 + i*0.2, 0.05, f"J = {resultados[i]:.2f}", ha='center', fontsize=10)
         
         # Mejor controlador
         mejor_texto = f"MEJOR: {nombres[best]}"
-        fig.text(0.5, 0.01, mejor_texto, ha='center', fontsize=12, weight='bold')
+        fig.text(0.5, 0.02, mejor_texto, ha='center', fontsize=12, weight='bold')
     
         plt.tight_layout(rect=[0, 0.10, 1, 0.95])
     
