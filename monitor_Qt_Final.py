@@ -53,7 +53,7 @@ class serialPlot:
             if data:
                 self.buffer.extend(data)
     
-            #sincronizacion de paquetes
+            #sincronización de paquetes
             while True:
                 start = self.buffer.find(b'\xAA\x55')
     
@@ -62,7 +62,7 @@ class serialPlot:
                     break
     
                 if len(self.buffer) < start + 2 + 56:
-                    break  # esperar mas datos
+                    break  # esperar más datos
     
                 packet = self.buffer[start+2:start+2+56]
                 self.buffer = self.buffer[start+2+56:]
@@ -201,7 +201,7 @@ class serialPlot:
         
         plt.close()
         
-        # === NUEVO: abrir imagen automáticamente ===
+        # === Abrir imagen automáticamente ===
         try:
             if platform.system() == "Windows":
                 os.startfile(img_path)
@@ -233,10 +233,23 @@ class Monitor(QMainWindow):
             p = pg.PlotWidget(title=self.names[i])
             p.setYRange(ymin, ymax)
             p.setBackground('w')
+            p.showGrid(x=True, y=True)
+            p.addLegend()
 
-            r = p.plot(pen=pg.mkPen('r', width=2))
-            y = p.plot(pen=pg.mkPen('k', width=2))
-            u = p.plot(pen=pg.mkPen(color='b', width=2, style=Qt.DashLine))
+            r = p.plot(
+                pen=pg.mkPen('r', width=2),
+                name='Referencia'
+            )
+            
+            y = p.plot(
+                pen=pg.mkPen('k', width=2),
+                name='Salida'
+            )
+            
+            u = p.plot(
+                pen=pg.mkPen(color='b', width=2, style=Qt.DashLine),
+                name='Control'
+            )
 
             self.plots.append(p)
             self.curves.append((r,y,u))
@@ -281,14 +294,22 @@ class Monitor(QMainWindow):
 
 # ================= MAIN =================
 def main():
-
-    port = input("Puerto: ")
-    baud = int(input("Baudrate: "))
-    plotLength = int(input("Samples: "))
-    interval = int(input("Intervalo (ms): "))
-    ymin = float(input("Y min: "))
-    ymax = float(input("Y max: "))
-    saveCSV = int(input("Guardar CSV? (1/0): "))
+    clear()
+    print("--------------------------------------------------------------")
+    print("|                                                            |")
+    print("| Monitor de puerto serial.                                  |")
+    print("| v2.04, 7 de mayo del 2026.                                 |")
+    print("| Departamento de Electronica y Automatizacion, FIME-UANL.   |")
+    print("|                                                            |")
+    print("--------------------------------------------------------------")
+    print("Introduzca los siguientes parametros:" )
+    port = input("Nombre del puerto a monitorear, por ejemplo COM5 : ")
+    baud = int(input("Baudrate del puerto: "))
+    plotLength = int(input("Muestras en el plot: "))
+    interval = int(input("Tiempo de actualizacion de plot en mseg: "))
+    ymin = float(input("Minimo valor de plot en magnitud: "))
+    ymax = float(input("Maximo valor de plot en magnitud: "))
+    saveCSV = int(input("Desea grabar los datos (1 - Si / 0 - No): "))
 
     s = serialPlot(port, baud, plotLength)
     s.readSerialStart()
