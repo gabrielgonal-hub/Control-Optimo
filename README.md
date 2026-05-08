@@ -380,53 +380,6 @@ Los resultados experimentales mostraron que:
 
 ---
 
-# Estructura del repositorio
-
-```text
-├── ESP32/
-│   ├── controladores/
-│   └── firmware/
-│
-├── Python/
-│   ├── LQR/
-│   ├── LQI/
-│   ├── Monitor/
-│   └── Analisis/
-│
-├── Latex/
-│   ├── PIA/
-│   ├── Beamer/
-│   └── Imagenes/
-│
-├── Datos/
-│   ├── CSV/
-│   └── Resultados/
-│
-└── README.md
-```
-
----
-
-# Compilación del documento
-
-Para compilar el documento en LaTeX se recomienda utilizar:
-
-* XeLaTeX
-
-o alternativamente:
-
-* LuaLaTeX
-
-Debido al uso de:
-
-* `circuitikz`
-* `listings`
-* codificación UTF-8
-* contenido en español
-* imágenes y diagramas complejos
-
----
-
 # Referencias
 
 1. K. Ogata, *Modern Control Engineering*, 5th ed.
