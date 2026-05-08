@@ -13,54 +13,54 @@ Proyecto desarrollado para la unidad de aprendizaje de **Control Óptimo** en la
 
 Las variables de estado se definieron como:
 
-\[
+$$
 x_1 = V_1
-\]
+$$
 
-\[
+$$
 x_2 = V_2
-\]
+$$
 
 con salida:
 
-\[
+$$
 y = x_2
-\]
+$$
 
 La representación en espacio de estados está dada por:
 
-\[
+$$
 \dot{x} = Ax + Bu
-\]
+$$
 
-\[
+$$
 y = Cx
-\]
+$$
 
 donde:
 
-\[
+$$
 A =
 \begin{bmatrix}
 -\frac{1}{R_1 C_1} - \frac{1}{R_2 C_1} & \frac{1}{R_2 C_1} \\
 \frac{1}{R_2 C_2} & -\frac{1}{R_2 C_2} - \frac{1}{R_3 C_2}
 \end{bmatrix}
-\]
+$$
 
-\[
+$$
 B =
 \begin{bmatrix}
 \frac{1}{R_1 C_1} \\
 0
 \end{bmatrix}
-\]
+$$
 
-\[
+$$
 C =
 \begin{bmatrix}
 0 & 1
 \end{bmatrix}
-\]
+$$
 
 ---
 
