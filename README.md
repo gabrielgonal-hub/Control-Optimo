@@ -376,7 +376,7 @@ con:
 $$
 H =
 \begin{bmatrix}
-h_1 \
+h_1 \\
 h_2
 \end{bmatrix}
 $$
@@ -464,7 +464,7 @@ Cada planta fue asociada a una estrategia de control distinta permitiendo realiz
 
 ---
 
-# Sistema de monitoreo e implementación experimental
+# Sistema de monitoreo
 La validación experimental fue realizada utilizando:
 - ESP32
 - Redes RC físicamente equivalentes
@@ -480,7 +480,9 @@ Además, se desarrolló una interfaz de monitoreo en Python para:
 - Evaluación del índice de desempeño
 El sistema de monitoreo se ejecuta mediante:
 
+```bash
 python monitor.py
+```
 
 ---
 
@@ -572,15 +574,15 @@ Los resultados mostraron que:
 
 # Referencias
 
-1. K. Ogata, Modern Control Engineering, 5th ed.
-2. D. E. Kirk, Optimal Control Theory: An Introduction
-3. G. F. Franklin, Feedback Control of Dynamic Systems
+1. K. Ogata, *Modern Control Engineering*, 5th ed.
+2. D. E. Kirk, *Optimal Control Theory: An Introduction*
+3. G. F. Franklin, *Feedback Control of Dynamic Systems*
 
 ---
 
 # Autor
 
-Gabriel González Alvarez
+**Gabriel González Alvarez**
 Facultad de Ingeniería Mecánica y Eléctrica
 Universidad Autónoma de Nuevo León
 
