@@ -464,7 +464,6 @@ Cada planta fue asociada a una estrategia de control distinta permitiendo realiz
 
 ---
 
----
 # Sistema de monitoreo e implementación experimental
 La validación experimental fue realizada utilizando:
 - ESP32
@@ -483,9 +482,9 @@ El sistema de monitoreo se ejecuta mediante:
 
 python monitor.py
 
-⸻
+---
 
-Interfaz de monitoreo
+##Interfaz de monitoreo
 
 La interfaz fue desarrollada utilizando:
 
@@ -504,9 +503,9 @@ Video de funcionamiento
 
 📹 Aquí agregar el enlace al video demostrativo de la interfaz y del sistema experimental.
 
-⸻
+---
 
-Resultados experimentales
+##Resultados experimentales
 
 Los resultados experimentales obtenidos permitieron comparar el desempeño de:
 
@@ -527,15 +526,15 @@ Los resultados mostraron que:
 * LQI presentó mejor seguimiento de referencia
 * Los métodos por asignación de polos requirieron mayor esfuerzo de control
 
-Reporte experimental
+##Reporte experimental
 
 <p align="center">
   <img src="Imagenes/reporte_monitor.png" width="850">
 </p>
 
-⸻
+---
 
-Resultados principales
+#Resultados principales
 
 ✔ Modelado matemático completo del sistema RC
 ✔ Diseño de múltiples estrategias de control moderno
@@ -546,18 +545,18 @@ Resultados principales
 ✔ Comparación experimental entre estrategias óptimas y no óptimas
 ✔ Sistema de adquisición y monitoreo en tiempo real
 
-⸻
+---
 
-Tecnologías utilizadas
+#Tecnologías utilizadas
 
-Hardware
+##Hardware
 
 * ESP32
 * Protoboard
 * Resistencias
 * Capacitores
 
-Software
+##Software
 
 * Python
 * NumPy
@@ -569,21 +568,21 @@ Software
 * Arduino IDE
 * LaTeX
 
-⸻
+---
 
-Referencias
+#Referencias
 
 1. K. Ogata, Modern Control Engineering, 5th ed.
 2. D. E. Kirk, Optimal Control Theory: An Introduction
 3. G. F. Franklin, Feedback Control of Dynamic Systems
 
-⸻
+---
 
-Autor
+#Autor
 
 Gabriel González Alvarez
 Facultad de Ingeniería Mecánica y Eléctrica
 Universidad Autónoma de Nuevo León
 
-⸻
+---
 
