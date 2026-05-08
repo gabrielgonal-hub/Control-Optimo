@@ -1,3 +1,8 @@
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![ESP32](https://img.shields.io/badge/ESP32-Control-green)
+![LaTeX](https://img.shields.io/badge/LaTeX-Document-red)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 # Control Óptimo de un Sistema RC con ESP32
 
 Proyecto desarrollado para la unidad de aprendizaje de **Control Óptimo** en la Facultad de Ingeniería Mecánica y Eléctrica (FIME-UANL).
