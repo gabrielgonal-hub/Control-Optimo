@@ -298,7 +298,7 @@ def main():
     print("--------------------------------------------------------------")
     print("|                                                            |")
     print("| Monitor de puerto serial.                                  |")
-    print("| v2.04, 7 de mayo del 2026.                                 |")
+    print("| v1.08, 7 de mayo del 2026.                                 |")
     print("| Departamento de Electronica y Automatizacion, FIME-UANL.   |")
     print("|                                                            |")
     print("--------------------------------------------------------------")
