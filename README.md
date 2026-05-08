@@ -75,12 +75,12 @@ K = np.linalg.inv(R) @ B.T @ P
 
 Resultado:
 
-\[
+$$
 K =
 \begin{bmatrix}
 0.41421356 & 0.41421356
 \end{bmatrix}
-\]
+$$
 
 ---
 
@@ -88,47 +88,47 @@ K =
 
 El sistema fue aumentado incorporando acción integral.
 
-\[
+$$
 \dot{X}_a = A_aX_a + B_au
-\]
+$$
 
 con:
 
-\[
+$$
 A_a =
 \begin{bmatrix}
 0 & 0 & -1 \\
 0 & & \\
 0 & & A
 \end{bmatrix}
-\]
+$$
 
 y función de costo:
 
-\[
-Q_a = diag(10,1,5)
-\]
+$$
+Q_a = \mathrm{diag}(10,1,5)
+$$
 
 ---
 
 # Observador de Luenberger
 
-\[
+$$
 \dot{\hat{x}} =
 A\hat{x} + Bu + H(y-C\hat{x})
-\]
+$$
 
 ---
 
 # Seguimiento de referencia
 
-\[
+$$
 u = -Kx + gr
-\]
+$$
 
 donde:
 
-\[
+$$
 g =
 \begin{bmatrix}
 K & 1
@@ -142,7 +142,7 @@ C & D
 0 \\
 1
 \end{bmatrix}
-\]
+$$
 
 ---
 
@@ -150,26 +150,26 @@ C & D
 
 El controlador LQR fue diseñado mediante la minimización del funcional cuadrático:
 
-\[
+$$
 J = \int_{0}^{\infty}
 \left(
 x^TQx + u^TRu
 \right)dt
-\]
+$$
 
 Utilizando:
 
-\[
+$$
 Q =
 \begin{bmatrix}
 1 & 0 \\
 0 & 5
 \end{bmatrix}
-\]
+$$
 
-\[
+$$
 R = 1
-\]
+$$
 
 Este criterio permite balancear:
 
@@ -185,9 +185,9 @@ Este criterio permite balancear:
 
 Se diseñó una ley de control por retroalimentación de estados:
 
-\[
+$$
 u = -Kx + gr
-\]
+$$
 
 Las ganancias se obtuvieron igualando el polinomio característico del sistema en lazo cerrado con un polinomio deseado.
 
@@ -197,9 +197,9 @@ Las ganancias se obtuvieron igualando el polinomio característico del sistema e
 
 Se incorporó un integrador:
 
-\[
+$$
 x_0 = \int (r-y)dt
-\]
+$$
 
 permitiendo eliminar el error en estado estacionario para referencias constantes.
 
@@ -216,12 +216,12 @@ K = np.linalg.inv(R) @ B.T @ P
 
 Resultado:
 
-[
+$$
 K =
 \begin{bmatrix}
 0.41421356 & 0.41421356
 \end{bmatrix}
-]
+$$
 
 ---
 
@@ -231,26 +231,26 @@ El sistema fue aumentado incorporando acción integral y posteriormente se resol
 
 El sistema aumentado utilizado fue:
 
-[
+$$
 \dot{X}_a = A_aX_a + B_au
-]
+$$
 
 con:
 
-[
+$$
 A_a =
 \begin{bmatrix}
 0 & 0 & -1 \
 0 & & \
 0 & & A
 \end{bmatrix}
-]
+$$
 
 y función de costo:
 
-[
+$$
 Q_a = diag(10,1,5)
-]
+$$
 
 El controlador LQI permitió eliminar el error estacionario manteniendo un enfoque óptimo sobre el sistema aumentado.
 
@@ -262,10 +262,10 @@ Para los controladores basados en asignación de polos se implementó un observa
 
 El observador utilizado fue:
 
-[
+$$
 \dot{\hat{x}} =
 A\hat{x} + Bu + H(y-C\hat{x})
-]
+$$
 
 Los polos del observador se seleccionaron considerablemente más rápidos que los polos del controlador para garantizar convergencia rápida del error de estimación.
 
@@ -275,13 +275,13 @@ Los polos del observador se seleccionaron considerablemente más rápidos que lo
 
 Para garantizar seguimiento sin error estacionario se implementó una ganancia de prealimentación:
 
-[
+$$
 u = -Kx + gr
-]
+$$
 
 donde:
 
-[
+$$
 g =
 \begin{bmatrix}
 K & 1
@@ -295,7 +295,7 @@ C & D
 0 \
 1
 \end{bmatrix}
-]
+$$
 
 ---
 
