@@ -336,8 +336,8 @@ con:
 $$
 A_a =
 \begin{bmatrix}
-0 & 0 & -1 \
-0 & -\frac{1}{R_1 C_1} - \frac{1}{R_2 C_1} & \frac{1}{R_2 C_1} \
+0 & 0 & -1 \\
+0 & -\frac{1}{R_1 C_1} - \frac{1}{R_2 C_1} & \frac{1}{R_2 C_1} \\
 0 & \frac{1}{R_2 C_2} & -\frac{1}{R_2 C_2} - \frac{1}{R_3 C_2}
 \end{bmatrix}
 $$
@@ -347,8 +347,8 @@ y:
 $$
 Q_a =
 \begin{bmatrix}
-10 & 0 & 0 \
-0 & 1 & 0 \
+10 & 0 & 0 \\
+0 & 1 & 0 \\
 0 & 0 & 5
 \end{bmatrix}
 $$
@@ -430,12 +430,12 @@ g =
 K & 1
 \end{bmatrix}
 \begin{bmatrix}
-A & B \
+A & B \\
 C & D
 \end{bmatrix}^{-1}
 \begin{bmatrix}
-0 \
-0 \
+0 \\
+0 \\
 1
 \end{bmatrix}
 $$
