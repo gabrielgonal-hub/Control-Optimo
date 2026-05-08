@@ -253,16 +253,21 @@ con:
 $$
 A_a =
 \begin{bmatrix}
-0 & 0 & -1 \
-0 & & \
-0 & & A
+0 & 0 & -1 \\
+0 & -\frac{1}{R_1 C_1} - \frac{1}{R_2 C_1} & \frac{1}{R_2 C_1} \\
+0 & \frac{1}{R_2 C_2} & -\frac{1}{R_2 C_2} - \frac{1}{R_3 C_2}
 \end{bmatrix}
 $$
 
 y función de costo:
 
 $$
-Q_a = diag(10,1,5)
+Q_a =
+\begin{bmatrix}
+10 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 5
+\end{bmatrix}
 $$
 
 El controlador LQI permitió eliminar el error estacionario manteniendo un enfoque óptimo sobre el sistema aumentado.
