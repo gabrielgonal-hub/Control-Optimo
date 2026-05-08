@@ -305,12 +305,12 @@ g =
 K & 1
 \end{bmatrix}
 \begin{bmatrix}
-A & B \
+A & B \\
 C & D
 \end{bmatrix}^{-1}
 \begin{bmatrix}
-0 \
-0 \
+0 \\
+0 \\
 1
 \end{bmatrix}
 $$
