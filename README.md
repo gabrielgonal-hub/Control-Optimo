@@ -1,4 +1,3 @@
-````markdown
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![ESP32](https://img.shields.io/badge/ESP32-Control-green)
 ![LaTeX](https://img.shields.io/badge/LaTeX-Document-red)
