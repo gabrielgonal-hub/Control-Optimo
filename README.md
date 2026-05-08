@@ -106,8 +106,8 @@ $$
 A_a =
 \begin{bmatrix}
 0 & 0 & -1 \\
-0 & a_{11} & a_{12} \\
-0 & a_{21} & a_{22}
+0 & -\frac{1}{R_1 C_1} - \frac{1}{R_2 C_1} & \frac{1}{R_2 C_1} \\
+0 & \frac{1}{R_2 C_2} & -\frac{1}{R_2 C_2} - \frac{1}{R_3 C_2}
 \end{bmatrix}
 $$
 
