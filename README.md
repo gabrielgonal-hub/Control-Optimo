@@ -456,73 +456,106 @@ La validación experimental fue realizada utilizando:
 
 Cada planta fue asociada a una estrategia de control distinta permitiendo realizar comparaciones simultáneas bajo las mismas condiciones experimentales.
 
-## Implementación física
+## Conexiones en protoboard
 
 <p align="center">
-  <img src="Imagenes/proto.jpeg" width="800">
+  <img src="Imagenes/proto_digital.jpg" width="800">
 </p>
 
 ---
 
-# Sistema de monitoreo
+---
+# Sistema de monitoreo e implementación experimental
+La validación experimental fue realizada utilizando:
+- ESP32
+- Redes RC físicamente equivalentes
+- Adquisición analógica en tiempo real
+- Señales PWM
+- Comunicación serial UART
+El sistema completo fue implementado experimentalmente para comparar simultáneamente distintos controladores bajo las mismas condiciones de operación.
+Además, se desarrolló una interfaz de monitoreo en Python para:
+- Visualización en tiempo real
+- Monitoreo simultáneo de variables
+- Registro automático de datos
+- Exportación a CSV
+- Evaluación del índice de desempeño
+El sistema de monitoreo se ejecuta mediante:
 
-Se desarrolló un sistema de monitoreo en tiempo real utilizando:
+python monitor.py
+
+⸻
+
+Interfaz de monitoreo
+
+La interfaz fue desarrollada utilizando:
 
 * PySide6
 * PyQtGraph
 * pandas
 
-Características implementadas:
+y permite visualizar en tiempo real:
 
-* Visualización en tiempo real
-* Monitoreo simultáneo de 4 controladores
-* Exportación automática a CSV
-* Evaluación automática del índice de desempeño
-* Generación automática de reportes
+* Referencia
+* Señal de control
+* Estados del sistema
+* Respuesta experimental
 
-## Interfaz de monitoreo
+Video de funcionamiento
 
-<p align="center">
-  <img src="Imagenes/reporte_monitor.png" width="900">
-</p>
+📹 Aquí agregar el enlace al video demostrativo de la interfaz y del sistema experimental.
 
----
+⸻
 
-# Resultados experimentales
+Resultados experimentales
 
-Los resultados obtenidos permitieron comparar el desempeño de:
+Los resultados experimentales obtenidos permitieron comparar el desempeño de:
 
 * Asignación de polos
-* Control integral por asignación de polos
+* Control integral
 * LQR
 * LQI
 
 El índice de desempeño fue calculado numéricamente mediante:
 
-```python
 J = ((x1**2 + 5*x2**2 + u**2) * dt).sum()
-```
 
-Los resultados experimentales mostraron que:
+Los resultados mostraron que:
 
-* El controlador LQR obtuvo el menor valor de (J)
-* LQI presentó mejor seguimiento pero mayor costo total
-* Los controladores por asignación de polos requirieron mayor esfuerzo de control
+* El controlador LQR obtuvo el menor valor del índice (J)
+* LQI presentó mejor seguimiento de referencia
+* Los métodos por asignación de polos requirieron mayor esfuerzo de control
 
-Los resultados experimentales validan que el controlador LQR proporciona el mejor compromiso entre seguimiento de referencia y energía de control respecto al funcional cuadrático planteado.
+Reporte experimental
 
----
+<p align="center">
+  <img src="Imagenes/reporte.png" width="850">
+</p>
 
-# Tecnologías utilizadas
+⸻
 
-## Hardware
+Resultados principales
+
+✔ Modelado matemático completo del sistema RC
+✔ Diseño de múltiples estrategias de control moderno
+✔ Resolución analítica y computacional de Riccati
+✔ Implementación física en ESP32
+✔ Observación de estados mediante observador de Luenberger
+✔ Validación experimental del controlador LQR
+✔ Comparación experimental entre estrategias óptimas y no óptimas
+✔ Sistema de adquisición y monitoreo en tiempo real
+
+⸻
+
+Tecnologías utilizadas
+
+Hardware
 
 * ESP32
 * Protoboard
 * Resistencias
 * Capacitores
 
-## Software
+Software
 
 * Python
 * NumPy
@@ -534,21 +567,21 @@ Los resultados experimentales validan que el controlador LQR proporciona el mejo
 * Arduino IDE
 * LaTeX
 
----
+⸻
 
-# Referencias
+Referencias
 
-1. K. Ogata, *Modern Control Engineering*, 5th ed.
+1. K. Ogata, Modern Control Engineering, 5th ed.
+2. D. E. Kirk, Optimal Control Theory: An Introduction
+3. G. F. Franklin, Feedback Control of Dynamic Systems
 
-2. D. E. Kirk, *Optimal Control Theory: An Introduction*
+⸻
 
-3. G. F. Franklin, *Feedback Control of Dynamic Systems*
+Autor
 
----
-
-# Autor
-
-**Gabriel González Alvarez**
+Gabriel González Alvarez
 Facultad de Ingeniería Mecánica y Eléctrica
 Universidad Autónoma de Nuevo León
----
+
+⸻
+
