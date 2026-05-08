@@ -179,8 +179,7 @@ $$
 Se selecciona un polinomio deseado de segundo orden:
 
 $$
-(\lambda-a_1)(\lambda-a_2)
-=
+(\lambda-a_1)(\lambda-a_2)=
 \lambda^2 + \alpha_1\lambda + \alpha_2
 $$
 
