@@ -179,8 +179,7 @@ $$
 Se selecciona un polinomio deseado de segundo orden:
 
 $$
-(\lambda-a_1)(\lambda-a_2)=
-\lambda^2 + \alpha_1\lambda + \alpha_2
+(\lambda-a_1)(\lambda-a_2) = \lambda^2 + \alpha_1\lambda + \alpha_2
 $$
 
 donde:
@@ -245,9 +244,7 @@ $$
 Se selecciona un polinomio deseado de tercer orden:
 
 $$
-(\lambda-a_1)(\lambda-a_2)(\lambda-a_3)
-=
-\lambda^3 + \alpha_1\lambda^2 + \alpha_2\lambda + \alpha_3
+(\lambda-a_1)(\lambda-a_2)(\lambda-a_3) = \lambda^3 + \alpha_1\lambda^2 + \alpha_2\lambda + \alpha_3
 $$
 
 con:
@@ -393,10 +390,7 @@ $$
 Se seleccionó un polinomio deseado:
 
 $$
-(\lambda-b_1)(\lambda-b_2)
-==========================
-
-\lambda^2 + \beta_1\lambda + \beta_2
+(\lambda-b_1)(\lambda-b_2) = \lambda^2 + \beta_1\lambda + \beta_2
 $$
 
 donde:
