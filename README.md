@@ -517,7 +517,9 @@ Los resultados experimentales obtenidos permitieron comparar el desempeño de:
 
 El índice de desempeño fue calculado numéricamente mediante:
 
+```python
 J = ((x1**2 + 5*x2**2 + u**2) * dt).sum()
+```
 
 Los resultados mostraron que:
 
@@ -528,7 +530,7 @@ Los resultados mostraron que:
 Reporte experimental
 
 <p align="center">
-  <img src="Imagenes/reporte.png" width="850">
+  <img src="Imagenes/reporte_monitor.png" width="850">
 </p>
 
 ⸻
