@@ -583,7 +583,9 @@ Los resultados mostraron que:
 # Autor
 
 **Gabriel González Alvarez**
+
 Facultad de Ingeniería Mecánica y Eléctrica
+
 Universidad Autónoma de Nuevo León
 
 ---
