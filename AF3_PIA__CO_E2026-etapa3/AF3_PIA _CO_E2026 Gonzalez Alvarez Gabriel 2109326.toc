@@ -1,0 +1,26 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Introducción}{2}{section.1}%
+\contentsline {section}{\numberline {2}Modelo del sistema}{2}{section.2}%
+\contentsline {section}{\numberline {3}Índice de desempeño}{4}{section.3}%
+\contentsline {section}{\numberline {4}Solución numérica}{4}{section.4}%
+\contentsline {section}{\numberline {5}Seguimiento de referencia mediante cambio de coordenadas}{5}{section.5}%
+\contentsline {section}{\numberline {6}Implementación en microcontrolador}{6}{section.6}%
+\contentsline {section}{\numberline {7}Implementación experimental}{7}{section.7}%
+\contentsline {section}{\numberline {8}Resultados experimentales y verificación de optimalidad}{8}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Adquisición de datos experimentales}{9}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Resultados experimentales}{9}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Cálculo del índice de desempeño}{10}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Comparación de controladores}{11}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Discusión de resultados}{11}{subsection.8.5}%
+\contentsline {section}{\numberline {9}Conclusión}{12}{section.9}%
+\contentsline {section}{Apéndices}{13}{section*.6}%
+\contentsline {section}{\numberline {A}Códigos}{13}{appendix.Alph1}%
+\contentsline {subsection}{\numberline {A.1}Resolución numérica del controlador LQR}{13}{subsection.Alph1.1}%
+\contentsline {subsection}{\numberline {A.2}Análisis simbólico de la ecuación de Riccati}{13}{subsection.Alph1.2}%
+\contentsline {subsection}{\numberline {A.3}Resolución numérica del controlador LQI}{14}{subsection.Alph1.3}%
+\contentsline {subsection}{\numberline {A.4}Implementación en microcontrolador (ESP32)}{15}{subsection.Alph1.4}%
+\contentsline {subsection}{\numberline {A.5}Monitor de adquisición y evaluación experimental}{22}{subsection.Alph1.5}%
+\contentsline {section}{\numberline {B}Controladores}{35}{appendix.Alph2}%
+\contentsline {subsection}{\numberline {B.1}Control por asignación de polos}{35}{subsection.Alph2.1}%
+\contentsline {subsection}{\numberline {B.2}Control integral por asignación de polos}{36}{subsection.Alph2.2}%
+\contentsline {subsection}{\numberline {B.3}Observador de Luenberger}{38}{subsection.Alph2.3}%
