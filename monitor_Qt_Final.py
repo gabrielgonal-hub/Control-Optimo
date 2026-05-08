@@ -18,6 +18,75 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, Q
 from PySide6.QtCore import QTimer, Qt
 import pyqtgraph as pg
 
+# ================= CONFIG =================
+def load_config():
+
+    if getattr(sys, 'frozen', False):
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    config_dir = os.path.join(base_dir, "config")
+    config_path = os.path.join(config_dir, "config.ini")
+
+    if not os.path.exists(config_path):
+        return None
+
+    try:
+        df = pd.read_csv(config_path)
+
+        config = {
+            "port": df["port"][0],
+            "baud": int(df["baud"][0]),
+            "plotLength": int(df["plotLength"][0]),
+            "interval": int(df["interval"][0]),
+            "ymin": float(df["ymin"][0]),
+            "ymax": float(df["ymax"][0])
+        }
+
+        print("\nConfiguración cargada desde config.ini")
+
+        return config
+
+    except Exception as e:
+        print("Error leyendo config.ini:")
+        print(e)
+
+        return None
+
+
+def save_config(port, baud, plotLength, interval, ymin, ymax):
+
+    if getattr(sys, 'frozen', False):
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    config_dir = os.path.join(base_dir, "config")
+    os.makedirs(config_dir, exist_ok=True)
+    
+    config_path = os.path.join(config_dir, "config.ini")
+
+    df = pd.DataFrame([{
+        "port": port,
+        "baud": baud,
+        "plotLength": plotLength,
+        "interval": interval,
+        "ymin": ymin,
+        "ymax": ymax
+    }])
+
+    df.to_csv(config_path, index=False)
+
+    print("\nConfiguración guardada en:")
+    print(config_path)
+
+def clear(): 
+    if os.name == "posix":
+        os.system ("clear")
+    elif os.name in ("ce", "nt", "dos"):
+        os.system ("cls")
+
 # ================= SERIAL =================
 class serialPlot:
     def __init__(self, port, baud, plotLength):
@@ -190,7 +259,7 @@ class serialPlot:
         mejor_texto = f"MEJOR: {nombres[best]}"
         fig.text(0.5, 0.02, mejor_texto, ha='center', fontsize=12, weight='bold')
     
-        plt.tight_layout(rect=[0, 0.10, 1, 0.95])
+        plt.tight_layout(rect=[0, 0.16, 1, 0.95])
     
         # Guardar imagen
         img_path = path.replace(".csv", ".png")
@@ -199,18 +268,15 @@ class serialPlot:
         print("\nImagen guardada en:")
         print(img_path)
         
-        plt.close()
+        manager = plt.get_current_fig_manager()
         
-        # === Abrir imagen automáticamente ===
         try:
-            if platform.system() == "Windows":
-                os.startfile(img_path)
-            elif platform.system() == "Darwin":  # macOS
-                subprocess.call(["open", img_path])
-            else:  # Linux
-                subprocess.call(["xdg-open", img_path])
-        except Exception as e:
-            print("No se pudo abrir la imagen automáticamente:", e)
+            manager.window.showMaximized()
+        except:
+            pass
+        
+        plt.show()
+        plt.close()
 
 # ================= GUI =================
 class Monitor(QMainWindow):
@@ -298,21 +364,72 @@ def main():
     print("--------------------------------------------------------------")
     print("|                                                            |")
     print("| Monitor de puerto serial.                                  |")
-    print("| v1.08, 7 de mayo del 2026.                                 |")
+    print("| v1.09, 7 de mayo del 2026.                                 |")
     print("| Departamento de Electronica y Automatizacion, FIME-UANL.   |")
     print("|                                                            |")
     print("--------------------------------------------------------------")
     print("Introduzca los siguientes parametros:" )
-    port = input("Nombre del puerto a monitorear, por ejemplo COM5 : ")
-    baud = int(input("Baudrate del puerto: "))
-    plotLength = int(input("Muestras en el plot: "))
-    interval = int(input("Tiempo de actualizacion de plot en mseg: "))
-    ymin = float(input("Minimo valor de plot en magnitud: "))
-    ymax = float(input("Maximo valor de plot en magnitud: "))
+    config = load_config()
+    if config:
+    
+        usar = int(input("Usar configuracion guardada? (1/0): "))
+    
+        if usar:
+    
+            port = config["port"]
+            baud = config["baud"]
+            plotLength = config["plotLength"]
+            interval = config["interval"]
+            ymin = config["ymin"]
+            ymax = config["ymax"]
+
+            print(f"""
+            Configuracion cargada:
+            
+            Puerto      : {port}
+            Baudrate    : {baud}
+            Muestras    : {plotLength}
+            Intervalo   : {interval} ms
+            Ymin        : {ymin}
+            Ymax        : {ymax}
+            """)
+    
+        else:
+    
+            port = input("Nombre del puerto a monitorear, por ejemplo COM5 : ")
+            baud = int(input("Baudrate del puerto: "))
+            plotLength = int(input("Muestras en el plot: "))
+            interval = int(input("Tiempo de actualizacion de plot en mseg: "))
+            ymin = float(input("Minimo valor de plot en magnitud: "))
+            ymax = float(input("Maximo valor de plot en magnitud: "))
+    
+    else:
+    
+        port = input("Nombre del puerto a monitorear, por ejemplo COM5 : ")
+        baud = int(input("Baudrate del puerto: "))
+        plotLength = int(input("Muestras en el plot: "))
+        interval = int(input("Tiempo de actualizacion de plot en mseg: "))
+        ymin = float(input("Minimo valor de plot en magnitud: "))
+        ymax = float(input("Maximo valor de plot en magnitud: "))
+
     saveCSV = int(input("Desea grabar los datos (1 - Si / 0 - No): "))
 
-    s = serialPlot(port, baud, plotLength)
-    s.readSerialStart()
+    if not (config and usar):
+
+        guardarConfig = int(input("Guardar configuracion? (1/0): "))
+    
+        if guardarConfig:
+            save_config(port, baud, plotLength, interval, ymin, ymax)
+
+    try:
+        s = serialPlot(port, baud, plotLength)
+        s.readSerialStart()
+    
+    except Exception as e:
+        print("\nNo se pudo abrir el puerto serial.")
+        print(e)
+        input("\nPresione ENTER para salir...")
+        return
 
     app = QApplication(sys.argv)
     win = Monitor(s, interval, ymin, ymax)
