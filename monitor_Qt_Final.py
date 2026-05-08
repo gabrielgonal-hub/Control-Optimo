@@ -14,7 +14,19 @@ import matplotlib.pyplot as plt
 import platform
 import subprocess
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QGridLayout,
+    QLabel,
+    QPushButton,
+    QLineEdit,
+    QVBoxLayout,
+    QHBoxLayout,
+    QCheckBox,
+    QMessageBox
+)
 from PySide6.QtCore import QTimer, Qt
 import pyqtgraph as pg
 
@@ -41,21 +53,29 @@ def load_config():
             "plotLength": int(df["plotLength"][0]),
             "interval": int(df["interval"][0]),
             "ymin": float(df["ymin"][0]),
-            "ymax": float(df["ymax"][0])
+            "ymax": float(df["ymax"][0]),
+            "saveCSV": str(df["saveCSV"][0]).lower() in ["1", "true", "yes"]
         }
 
-        print("\nConfiguración cargada desde config.ini")
+        QMessageBox.information(
+            None,
+            "Configuración",
+            "Configuración cargada desde config.ini"
+        )
 
         return config
 
     except Exception as e:
-        print("Error leyendo config.ini:")
-        print(e)
+
+        QMessageBox.critical(
+            None,
+            "Error",
+            f"Error leyendo config.ini:\n\n{e}"
+        )
 
         return None
 
-
-def save_config(port, baud, plotLength, interval, ymin, ymax):
+def save_config(port, baud, plotLength, interval, ymin, ymax, saveCSV):
 
     if getattr(sys, 'frozen', False):
         base_dir = os.path.dirname(sys.executable)
@@ -73,13 +93,17 @@ def save_config(port, baud, plotLength, interval, ymin, ymax):
         "plotLength": plotLength,
         "interval": interval,
         "ymin": ymin,
-        "ymax": ymax
+        "ymax": ymax,
+        "saveCSV": saveCSV
     }])
 
     df.to_csv(config_path, index=False)
 
-    print("\nConfiguración guardada en:")
-    print(config_path)
+    QMessageBox.information(
+        None,
+        "Configuración guardada",
+        f"Configuración guardada en:\n\n{config_path}"
+    )
 
 def clear(): 
     if os.name == "posix":
@@ -110,6 +134,7 @@ class serialPlot:
 
     def readSerialStart(self):
         self.thread = Thread(target=self.backgroundThread)
+        self.thread.daemon = True
         self.thread.start()
 
     def backgroundThread(self):
@@ -117,10 +142,23 @@ class serialPlot:
         self.serialConnection.reset_input_buffer()
     
         while self.isRun:
-    
-            data = self.serialConnection.read(self.serialConnection.in_waiting or 1)
-            if data:
-                self.buffer.extend(data)
+
+            try:
+        
+                data = self.serialConnection.read(
+                    self.serialConnection.in_waiting or 1
+                )
+        
+                if data:
+                    self.buffer.extend(data)
+        
+            except serial.SerialException as e:
+        
+                print("\nError serial:")
+                print(e)
+        
+                self.isRun = False
+                break
     
             #sincronización de paquetes
             while True:
@@ -141,8 +179,11 @@ class serialPlot:
             
     def close(self, saveCSV):
         self.isRun = False
-        self.thread.join()
-        self.serialConnection.close()
+        if self.thread is not None:
+            self.thread.join(timeout=1)
+        
+        if self.serialConnection.is_open:
+            self.serialConnection.close()
 
         if saveCSV:
             self.saveCSV()
@@ -150,7 +191,13 @@ class serialPlot:
     def saveCSV(self):
 
         if not self.csvPackets:
-            print("No hay datos para guardar.")
+        
+            QMessageBox.warning(
+                None,
+                "Sin datos",
+                "No hay datos para guardar."
+            )
+        
             return
             
         data = []
@@ -188,8 +235,11 @@ class serialPlot:
 
         df.to_csv(path, index=False)
 
-        print("\nCSV guardado en:")
-        print(path)
+        QMessageBox.information(
+            None,
+            "CSV guardado",
+            f"CSV guardado en:\n\n{path}"
+        )
 
         resultados, nombres = self.calcular_J(df)
         self.generar_reporte(df, resultados, nombres, filename, path)
@@ -265,23 +315,191 @@ class serialPlot:
         img_path = path.replace(".csv", ".png")
         plt.savefig(img_path, dpi=300)
         
-        print("\nImagen guardada en:")
-        print(img_path)
-        
         manager = plt.get_current_fig_manager()
-        
+
         try:
             manager.window.showMaximized()
         except:
             pass
         
-        plt.show()
-        plt.close()
+        plt.show(block=False)
+        plt.pause(0.1)
+        
+        QMessageBox.information(
+            None,
+            "Reporte generado",
+            f"Imagen guardada en:\n\n{img_path}"
+        )
+
+# ================= SETUP WINDOW =================
+class SetupWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Monitor Serial v2.0 - FIME UANL")
+        self.setMinimumWidth(350)
+
+        layout = QVBoxLayout()
+
+        title = QLabel(
+            "Monitor de Puerto Serial\n"
+            "v2.0 - 7 de mayo del 2026\n"
+            "Departamento de Electrónica y Automatización\n"
+            "FIME - UANL"
+        )
+
+        title.setStyleSheet("""
+            font-size: 14pt;
+            font-weight: bold;
+        """)
+        
+        title.setAlignment(Qt.AlignCenter)
+        
+        layout.addWidget(title)
+
+        # ===== Inputs =====
+
+        self.portEdit = QLineEdit("COM4")
+        self.baudEdit = QLineEdit("115200")
+        self.samplesEdit = QLineEdit("50")
+        self.intervalEdit = QLineEdit("50")
+        self.yminEdit = QLineEdit("-0.1")
+        self.ymaxEdit = QLineEdit("3.3")
+
+        layout.addWidget(QLabel("Puerto"))
+        layout.addWidget(self.portEdit)
+
+        layout.addWidget(QLabel("Baudrate"))
+        layout.addWidget(self.baudEdit)
+
+        layout.addWidget(QLabel("Samples"))
+        layout.addWidget(self.samplesEdit)
+
+        layout.addWidget(QLabel("Intervalo (ms)"))
+        layout.addWidget(self.intervalEdit)
+
+        layout.addWidget(QLabel("Y min"))
+        layout.addWidget(self.yminEdit)
+
+        layout.addWidget(QLabel("Y max"))
+        layout.addWidget(self.ymaxEdit)
+
+        # ===== Checkboxes =====
+
+        self.saveCSVCheck = QCheckBox("Guardar CSV")
+        self.saveConfigCheck = QCheckBox("Guardar configuración")
+        self.useConfigCheck = QCheckBox("Usar configuración guardada")
+
+        layout.addWidget(self.saveCSVCheck)
+        layout.addWidget(self.saveConfigCheck)
+        layout.addWidget(self.useConfigCheck)
+
+        # ===== Botón =====
+
+        self.startButton = QPushButton("INICIAR")
+        self.startButton.clicked.connect(self.startMonitor)
+
+        layout.addWidget(self.startButton)
+
+        self.setLayout(layout)
+
+        # ===== Cargar config automáticamente =====
+
+        self.config = load_config()
+
+        if self.config:
+            self.useConfigCheck.setChecked(True)
+            self.saveCSVCheck.setChecked(self.config["saveCSV"])
+            self.portEdit.setText(str(self.config["port"]))
+            self.baudEdit.setText(str(self.config["baud"]))
+            self.samplesEdit.setText(str(self.config["plotLength"]))
+            self.intervalEdit.setText(str(self.config["interval"]))
+            self.yminEdit.setText(str(self.config["ymin"]))
+            self.ymaxEdit.setText(str(self.config["ymax"]))
+
+    def startMonitor(self):
+
+        try:
+
+            # ===== Config guardada =====
+
+            if self.useConfigCheck.isChecked() and self.config:
+
+                port = self.config["port"]
+                baud = self.config["baud"]
+                plotLength = self.config["plotLength"]
+                interval = self.config["interval"]
+                ymin = self.config["ymin"]
+                ymax = self.config["ymax"]
+
+            else:
+
+                port = self.portEdit.text()
+                baud = int(self.baudEdit.text())
+                plotLength = int(self.samplesEdit.text())
+                interval = int(self.intervalEdit.text())
+                ymin = float(self.yminEdit.text())
+                ymax = float(self.ymaxEdit.text())
+
+            saveCSV = self.saveCSVCheck.isChecked()
+
+            # ===== Guardar config =====
+
+            if self.saveConfigCheck.isChecked():
+
+                save_config(
+                    port,
+                    baud,
+                    plotLength,
+                    interval,
+                    ymin,
+                    ymax,
+                    saveCSV
+                )
+
+            # ===== Serial =====
+
+            self.serialObj = serialPlot(
+                port,
+                baud,
+                plotLength
+            )
+
+            self.serialObj.readSerialStart()
+
+            # ===== Monitor =====
+
+            self.monitor = Monitor(
+                self.serialObj,
+                interval,
+                ymin,
+                ymax,
+                saveCSV
+            )
+
+            self.monitor.showMaximized()
+
+            self.hide()
+
+            # guardar para closeEvent
+            self.saveCSV = saveCSV
+
+        except Exception as e:
+
+            QMessageBox.critical(
+                self,
+                "Error",
+                str(e)
+            )
 
 # ================= GUI =================
-class Monitor(QMainWindow):
-    def __init__(self, serialObj, interval, ymin, ymax):
+class Monitor(QMainWindow):      
+    def __init__(self, serialObj, interval, ymin, ymax, saveCSV):
+        
         super().__init__()
+
+        self.setWindowTitle("Monitor de Control")
 
         self.s = serialObj
 
@@ -325,6 +543,7 @@ class Monitor(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
         self.timer.start(interval)
+        self.saveCSV = saveCSV
 
     def update(self):
 
@@ -357,87 +576,25 @@ class Monitor(QMainWindow):
             y.setData(list(self.s.data[i*4+2]))
             u.setData(list(self.s.data[i*4+3]))
 
+    def closeEvent(self, event):
 
+        try:
+            self.s.close(self.saveCSV)
+        except:
+            pass
+    
+        event.accept()
+        
 # ================= MAIN =================
 def main():
-    clear()
-    print("--------------------------------------------------------------")
-    print("|                                                            |")
-    print("| Monitor de puerto serial.                                  |")
-    print("| v1.09, 7 de mayo del 2026.                                 |")
-    print("| Departamento de Electronica y Automatizacion, FIME-UANL.   |")
-    print("|                                                            |")
-    print("--------------------------------------------------------------")
-    print("Introduzca los siguientes parametros:" )
-    config = load_config()
-    if config:
-    
-        usar = int(input("Usar configuracion guardada? (1/0): "))
-    
-        if usar:
-    
-            port = config["port"]
-            baud = config["baud"]
-            plotLength = config["plotLength"]
-            interval = config["interval"]
-            ymin = config["ymin"]
-            ymax = config["ymax"]
-
-            print(f"""
-            Configuracion cargada:
-            
-            Puerto      : {port}
-            Baudrate    : {baud}
-            Muestras    : {plotLength}
-            Intervalo   : {interval} ms
-            Ymin        : {ymin}
-            Ymax        : {ymax}
-            """)
-    
-        else:
-    
-            port = input("Nombre del puerto a monitorear, por ejemplo COM5 : ")
-            baud = int(input("Baudrate del puerto: "))
-            plotLength = int(input("Muestras en el plot: "))
-            interval = int(input("Tiempo de actualizacion de plot en mseg: "))
-            ymin = float(input("Minimo valor de plot en magnitud: "))
-            ymax = float(input("Maximo valor de plot en magnitud: "))
-    
-    else:
-    
-        port = input("Nombre del puerto a monitorear, por ejemplo COM5 : ")
-        baud = int(input("Baudrate del puerto: "))
-        plotLength = int(input("Muestras en el plot: "))
-        interval = int(input("Tiempo de actualizacion de plot en mseg: "))
-        ymin = float(input("Minimo valor de plot en magnitud: "))
-        ymax = float(input("Maximo valor de plot en magnitud: "))
-
-    saveCSV = int(input("Desea grabar los datos (1 - Si / 0 - No): "))
-
-    if not (config and usar):
-
-        guardarConfig = int(input("Guardar configuracion? (1/0): "))
-    
-        if guardarConfig:
-            save_config(port, baud, plotLength, interval, ymin, ymax)
-
-    try:
-        s = serialPlot(port, baud, plotLength)
-        s.readSerialStart()
-    
-    except Exception as e:
-        print("\nNo se pudo abrir el puerto serial.")
-        print(e)
-        input("\nPresione ENTER para salir...")
-        return
 
     app = QApplication(sys.argv)
-    win = Monitor(s, interval, ymin, ymax)
-    win.show()
 
-    app.exec()
+    setup = SetupWindow()
+    setup.show()
 
-    s.close(saveCSV)
+    sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     main()
