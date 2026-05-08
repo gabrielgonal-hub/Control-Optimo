@@ -97,16 +97,29 @@ con:
 $$
 A_a =
 \begin{bmatrix}
+0 & -C \\
+0 & A
+\end{bmatrix}
+$$
+
+$$
+A_a =
+\begin{bmatrix}
 0 & 0 & -1 \\
-0 & & \\
-0 & & A
+0 & a_{11} & a_{12} \\
+0 & a_{21} & a_{22}
 \end{bmatrix}
 $$
 
 y función de costo:
 
 $$
-Q_a = \mathrm{diag}(10,1,5)
+Q_a =
+\begin{bmatrix}
+10 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 5
+\end{bmatrix}
 $$
 
 ---
