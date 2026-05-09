@@ -543,12 +543,19 @@ Los resultados mostraron que:
 # Resultados principales
 
 ✔ Modelado matemático completo del sistema RC
+
 ✔ Diseño de múltiples estrategias de control moderno
+
 ✔ Resolución analítica y computacional de Riccati
+
 ✔ Implementación física en ESP32
+
 ✔ Observación de estados mediante observador de Luenberger
+
 ✔ Validación experimental del controlador LQR
+
 ✔ Comparación experimental entre estrategias óptimas y no óptimas
+
 ✔ Sistema de adquisición y monitoreo en tiempo real
 
 ---
@@ -587,7 +594,9 @@ Los resultados mostraron que:
 # Autor
 
 **Gabriel González Alvarez**
+
 Facultad de Ingeniería Mecánica y Eléctrica
+
 Universidad Autónoma de Nuevo León
 
 ---
