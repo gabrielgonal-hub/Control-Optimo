@@ -501,7 +501,7 @@ y permite visualizar en tiempo real:
 * Estados del sistema
 * Respuesta experimental
 
-##Video de funcionamiento
+## Video de funcionamiento
 
 <p align="center">
   <a href="https://youtu.be/9gk9sejwvD8">
