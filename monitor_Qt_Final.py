@@ -282,9 +282,7 @@ class serialPlot:
         
             ax.set_title(nombres[i])
             ax.grid()
-        
-            if i == 0:
-                ax.legend()
+            ax.legend()
     
         # Mejor índice
         best = resultados.index(min(resultados))
@@ -337,14 +335,14 @@ class SetupWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Monitor Serial v2.0 - FIME UANL")
+        self.setWindowTitle("Monitor Serial v2.1 - FIME UANL")
         self.setMinimumWidth(350)
 
         layout = QVBoxLayout()
 
         title = QLabel(
             "Monitor de Puerto Serial\n"
-            "v2.0 - 7 de mayo del 2026\n"
+            "v2.1 - 7 de mayo del 2026\n"
             "Departamento de Electrónica y Automatización\n"
             "FIME - UANL"
         )
