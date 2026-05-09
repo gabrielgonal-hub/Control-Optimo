@@ -501,9 +501,13 @@ y permite visualizar en tiempo real:
 * Estados del sistema
 * Respuesta experimental
 
-Video de funcionamiento
+##Video de funcionamiento
 
-📹 Aquí agregar el enlace al video demostrativo de la interfaz y del sistema experimental.
+<p align="center">
+  <a href="https://youtu.be/9gk9sejwvD8">
+    <img src="https://img.youtube.com/vi/9gk9sejwvD8/0.jpg" width="700">
+  </a>
+</p>
 
 ---
 
