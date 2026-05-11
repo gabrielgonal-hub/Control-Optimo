@@ -403,7 +403,28 @@ $$
 \beta_2 = b_1b_2
 $$
 
-Las ganancias del observador fueron calculadas mediante igualación de coeficientes.
+Las ganancias obtenidas fueron:
+
+$$
+h_1 = \beta_1
+-\frac{1}{R_1C_1}
+-\frac{1}{R_2C_1}
+-\frac{1}{R_2C_2}
+-\frac{1}{R_3C_2}
+$$
+
+$$
+h_2 =
+R_2C_2
+\left(
+\beta_2
+-\frac{1}{R_1R_1C_1C_2}
+-\frac{1}{R_1R_3C_1C_2}
+-\frac{1}{R_2R_3C_1C_2}
+-\frac{h_2}{R_1C_1}
+-\frac{h_2}{R_2C_1}
+\right)
+$$
 
 ---
 
