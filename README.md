@@ -556,7 +556,7 @@ Los resultados mostraron que:
 ## Reporte experimental
 
 <p align="center">
-  <img src="Imagenes/reporte_monitor.png" width="850">
+  <img src="Imagenes/reporte_monitor - copia.png" width="850">
 </p>
 
 ---
